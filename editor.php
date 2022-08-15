@@ -7,9 +7,6 @@ if(!isset($_SESSION['username'])){
 
 $loggedusername = $_SESSION['username'];
 
-$filepath = 'C:\laragon\www\\' . $loggedusername . '.txt';
-$file_handle = fopen($filepath, 'w');
-
 if(count($_GET) > 0){ //wird nur ausgeführt, wenn array grösser 0
 
     $colors = $_GET["backgroundInpute"] ."," .$_GET["buttonInput"] ."," .$_GET["hoverInput"];
@@ -178,7 +175,7 @@ for (i = 1; i <= "<?php echo ($SavedText1[0]); ?>"; i++) {
 
     //Buttons erstellen
     const btn = document.createElement("button");
-    btn.innerHTML = "<?php echo ($SavedText1[1]); ?>";
+    btn.innerHTML = ButtonText[i];
     btn.setAttribute("id", "ButId" + i);
     btn.setAttribute("class", "linkbutton");
     document.getElementById("previewbody").appendChild(btn);
@@ -188,7 +185,7 @@ for (i = 1; i <= "<?php echo ($SavedText1[0]); ?>"; i++) {
     btnT.type = 'text';
     btnT.setAttribute("id", "Feld_" + i);
     btnT.setAttribute("class", "EditTextInput")
-    btnT.setAttribute("value", "<?php echo ($SavedText1[1]); ?>")
+    btnT.setAttribute("value", ButtonText[i])
     document.getElementById("TextBereichGenerate").appendChild(btnT);
 
     //Eventlisterner hinzufügen
@@ -218,9 +215,12 @@ function removeFirstChar(string) {
     return result;
 }
 
-var ButtonCount = <?php echo ($SavedText1[0]); ?> + 1; //Zählt wie viele Buttons erstellt wurden.
+var ButtonCount = <?php echo ($SavedText1[0]); ?>; //Zählt wie viele Buttons erstellt wurden.
 
 function erstellenButton() {
+
+    //ButtonCount hochzählen
+    ButtonCount++;
 
     //Button erstellen
     const btn = document.createElement("button");
@@ -244,8 +244,6 @@ function erstellenButton() {
             TextAnpassen();
         },
         false);
-    //ButtonCount hochzählen
-    ButtonCount++;
 }
 
 //Daten aus Datenbank in CSS füllen 
@@ -268,7 +266,7 @@ function VarSubmit(BackgroundColor, buttonInput, hoverInput) {
 
     let feldInput = "&feldInput=" + ButtonCount;
 
-    for (Id = 1; Id < ButtonCount; Id++) {
+    for (Id = 1; Id <= ButtonCount; Id++) {
 
         var TextFeldNr = "#Feld_" + Id;
         var ButtonNr = "ButId" + Id;
@@ -277,13 +275,9 @@ function VarSubmit(BackgroundColor, buttonInput, hoverInput) {
         feldInput = feldInput + "," + Feld_value;
     }
 
-    window.alert(feldInput);
-
     window.location.href = "editor.php?backgroundInpute=" + BackgroundColor + "&buttonInput=" + buttonInput +
         "&hoverInput=" + hoverInput + feldInput;
 }
-
-window.alert("<?php echo ($SavedText1[0]); ?>")
 </script>
 
 
