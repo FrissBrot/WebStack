@@ -69,6 +69,7 @@ $SavedText1 = explode(",", $SavedText[0])
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="editor_style.css" media="screen" />
     <link rel="icon" href="pictures\favicon.gif" type="image/gif">
     <title>Webstack • Editor</title>
 </head>
@@ -103,7 +104,7 @@ $SavedText1 = explode(",", $SavedText[0])
             <div id="TextBereich">
                 <p class="NavZwischenTittel">Text</p>
                 <form>
-                    <div id="TextBereichGenerate"></div>
+                    <div class="NAV_Overflow" id="TextBereichGenerate"></div>
                 </form>
                 <button class="EditButtons" onclick="erstellenButton()">erstellen</button>
             </div>
@@ -279,185 +280,5 @@ function VarSubmit(BackgroundColor, buttonInput, hoverInput) {
         "&hoverInput=" + hoverInput + feldInput;
 }
 </script>
-
-
-<style>
-:root {
-    --kb-color-background: #5395a7;
-    --kb-color-button: silver;
-    --kb-color-hover: green;
-}
-
-#editfield {
-    display: flex;
-    float: left;
-}
-
-
-#editbar {
-    background-color: #252526;
-    width: calc(100vw * 0.15);
-    height: 100vh;
-    color: white;
-    margin-top: 100px;
-    border-radius: 10px;
-    border-color: #f4c700;
-    border-style: solid;
-    border-width: 2px;
-    font-family: 'Rubik', sans-serif;
-}
-
-#EditBarTitle {
-    font-size: 22px;
-    font-family: 'Rubik', sans-serif;
-    text-align: center;
-}
-
-.NavZwischenTittel {
-    font-size: 18px;
-    color: white;
-    text-align: center;
-
-}
-
-.TrennBorder {
-    margin-top: 30px;
-    width: calc((100vw * 0.15) * 0.7);
-    margin-left: calc(((100vw * 0.15) - (100vw * 0.15) * 0.7) / 2);
-    border-style: none;
-    border-color: #f4c700;
-    border-radius: 5px;
-    border-width: 2px;
-    border-bottom-style: solid;
-}
-
-.EditTextInput {
-    color: white;
-    background-color: #333333;
-    border-radius: 10px;
-    height: 25px;
-    width: calc((100vw * 0.15) * 0.8);
-    border-style: solid;
-    margin-left: calc(((100vw * 0.15) - (100vw * 0.15) * 0.8) / 2);
-    margin-top: 10px;
-
-}
-
-.EditButtons {
-    margin-top: 10px;
-    color: white;
-    background-color: #333333;
-    border-radius: 50px;
-    height: 30px;
-    width: calc((100vw * 0.15) / 2);
-    margin-left: calc(((100vw * 0.15) - ((100vw * 0.15) / 2)) / 2);
-
-}
-
-.EditBarAtributesText {
-    margin-left: 30px;
-}
-
-.EditBarAtributes {
-    text-align: left;
-}
-
-.PickerStyle {
-    -webkit-appearence: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: none;
-    background-color: transparent;
-}
-
-.PickerStyle::-webkit-color-swatch {
-    border-radius: 15px;
-    border: none;
-}
-
-.PickerStyle::-moz-color-swatch {
-    border-radius: 15px;
-    border: none;
-}
-
-#previewbody {
-    text-align: center;
-    color: black;
-    background-color: var(--kb-color-background);
-    width: calc(100vw * 0.6);
-    border-radius: 50px;
-    margin-top: 100px;
-    margin-left: calc((100vw - (100vw * 0.9)) / 2);
-    margin-right: calc((100vw - (100vw * 0.6)) / 2);
-}
-
-.iconsize {
-    height: 50px;
-    width: 50px;
-}
-
-h1 {
-    font-size: 75px;
-    font-family: arial;
-}
-
-#onlyfanstext {
-    font-size: 30px;
-}
-
-.linkbutton {
-    border: 10px none;
-    border-radius: 100px;
-    padding: 20px;
-    background-color: var(--kb-color-button);
-    margin-top: 27px;
-    height: 128px;
-    width: calc(90%);
-    max-width: 900px;
-    font-size: 75px;
-    color: black;
-    font-family: arial;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.linkbutton:hover {
-    background-color: var(--kb-color-hover);
-    margin-top: 25px;
-    height: 130px;
-    width: calc(91%);
-    max-width: 956px;
-}
-
-.profileborder {
-    border-radius: 100%;
-    border-style: solid;
-    border-width: 2px;
-    border-color: #396774;
-}
-
-.profilbildsize {
-    width: 25%;
-    height: 25%;
-    max-width: 230px;
-    max-height: 230px;
-    margin-top: 15px;
-}
-
-.footertext {
-    font-family: arial;
-    font-size: 30px;
-    text-decoration: none;
-    color: black;
-    margin-top: 50px;
-}
-
-.notfounderrortext {
-    font-family: arial;
-    font-size: 25px;
-    color: black;
-    text-decoration: none;
-}
-</style>
 
 </html>
