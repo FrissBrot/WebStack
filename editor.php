@@ -11,6 +11,7 @@ if(count($_GET) > 0){ //wird nur ausgeführt, wenn array grösser 0
 
     $colors = $_GET["backgroundInpute"] ."," .$_GET["buttonInput"] ."," .$_GET["hoverInput"];
     $ButtonText = $_GET["feldInput"];
+    $HyprText = $_GET["HyprInput"];
 
 }
 else{
@@ -41,6 +42,17 @@ if(strlen($ButtonText) > 1){
 
 };
 
+if(strlen($HyprText) > 1){
+
+    //Hyperlink Daten in Datenbank Speichern
+    require("mysql.php");
+    $stmt = $mysql->prepare("UPDATE accounts SET ButtonHyperlink = :Inhalt WHERE USERNAME = :username");
+    $stmt->bindValue(":username", $loggedusername);
+    $stmt->bindValue(":Inhalt", $HyprText);
+    $stmt->execute();
+
+};
+
 
 //Farb Daten Abfragen
 require("mysql.php");
@@ -60,7 +72,17 @@ $stmt->execute();
 $SavedText = $stmt->fetch();
 
 // Text in Array umwandeln
-$SavedText1 = explode(",", $SavedText[0])
+$SavedText1 = explode(",", $SavedText[0]);
+
+//Hyperlink Daten Abfragen
+require("mysql.php");
+$stmt = $mysql->prepare("SELECT ButtonHyperlink FROM accounts WHERE USERNAME = :user"); //Username überprüfen
+$stmt->bindValue(":user", $loggedusername);
+$stmt->execute();
+$SavedHypr = $stmt->fetch();
+
+// Text in Array umwandeln
+$SavedHypr1 = explode(",", $SavedHypr[0])
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +92,7 @@ $SavedText1 = explode(",", $SavedText[0])
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="editor_style.css" media="screen" />
-    <link rel="icon" href="pictures\favicon.gif" type="image/gif">
+    <link rel="icon" href="favicon.gif" type="image/gif">
     <title>Webstack • Editor</title>
 </head>
 
@@ -109,11 +131,15 @@ $SavedText1 = explode(",", $SavedText[0])
                 <button class="EditButtons" onclick="erstellenButton()">erstellen</button>
             </div>
             <div class="TrennBorder"></div>
+            <p class="NavZwischenTittel">Hyperlinks</p>
+            <form>
+                <div class="NAV_Overflow" id="HyperlinkBereichGenerate"></div>
+            </form>
             <button class="EditButtons"
                 onclick="VarSubmit(removeFirstChar(backgroundInput.value), removeFirstChar(buttonInput.value), removeFirstChar(hoverInput.value))">Speichern</button>
         </div>
         <div id="previewbody">
-            <img class="profileborder profilbildsize" src="pictures\pb.jpg" alt="Profilbild">
+            <img class="profileborder profilbildsize" src="pb.webp" alt="Profilbild">
             <h1 id=usernameshow>Dein Benutzername</h1>
             <!-- <button type="button"
                 onclick="window.open('https://open.spotify.com/user/69qw99f7ej6x4j26813u9hnly?si=bc5435e89ad54602', '_blank');"
@@ -170,6 +196,7 @@ hoverInput.addEventListener("input", function() {
 
 
 var ButtonText = <?php echo json_encode($SavedText1); ?>;
+var SavedHypr = <?php echo json_encode($SavedHypr1); ?>;
 
 //Buttons aus Datenbank erstellen
 for (i = 1; i <= "<?php echo ($SavedText1[0]); ?>"; i++) {
@@ -188,6 +215,14 @@ for (i = 1; i <= "<?php echo ($SavedText1[0]); ?>"; i++) {
     btnT.setAttribute("class", "EditTextInput")
     btnT.setAttribute("value", ButtonText[i])
     document.getElementById("TextBereichGenerate").appendChild(btnT);
+
+    //Textfeld erstellen
+    const Hypr = document.createElement('input');
+    Hypr.type = 'text';
+    Hypr.setAttribute("id", "Hyperlink_" + i);
+    Hypr.setAttribute("class", "EditTextInput")
+    Hypr.setAttribute("value", SavedHypr[i])
+    document.getElementById("HyperlinkBereichGenerate").appendChild(Hypr);
 
     //Eventlisterner hinzufügen
     var elem = document.getElementById("Feld_" + i);
@@ -238,6 +273,14 @@ function erstellenButton() {
     btnT.setAttribute("value", "neuer Button")
     document.getElementById("TextBereichGenerate").appendChild(btnT);
 
+    //Textfeld erstellen
+    const Hypr = document.createElement('input');
+    Hypr.type = 'text';
+    Hypr.setAttribute("id", "Hyperlink_" + i);
+    Hypr.setAttribute("class", "EditTextInput")
+    Hypr.setAttribute("value", ButtonText[i])
+    document.getElementById("HyperlinkBereichGenerate").appendChild(Hypr);
+
 
 
     var elem = document.getElementById("Feld_" + ButtonCount);
@@ -270,14 +313,23 @@ function VarSubmit(BackgroundColor, buttonInput, hoverInput) {
     for (Id = 1; Id <= ButtonCount; Id++) {
 
         var TextFeldNr = "#Feld_" + Id;
-        var ButtonNr = "ButId" + Id;
         let Feld_value = (document.querySelector(TextFeldNr).value);
 
         feldInput = feldInput + "," + Feld_value;
     }
 
+    let HyprInput = "&HyprInput=";
+
+    for (Id = 1; Id <= ButtonCount; Id++) {
+
+        var HyprFeldNr = "#Hyperlink_" + Id;
+        let HyprFeld_value = (document.querySelector(HyprFeldNr).value);
+
+        HyprInput = HyprInput + "," + HyprFeld_value;
+    }
+
     window.location.href = "editor.php?backgroundInpute=" + BackgroundColor + "&buttonInput=" + buttonInput +
-        "&hoverInput=" + hoverInput + feldInput;
+        "&hoverInput=" + hoverInput + feldInput + HyprInput;
 }
 </script>
 
