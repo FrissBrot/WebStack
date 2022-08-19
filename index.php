@@ -14,18 +14,18 @@
 
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 
-    <link id="favicon" rel="icon" type="image/gif" href="pictures\favicon.gif">
-    <link rel="icon" href="pictures\favicon.gif" type="image/gif">
-    <link rel="shortcut icon" type="image/gif" href="pictures\favicon.gif">
-    <link rel="apple-touch-icon" href="pictures\favicon.gif">
-    <link rel="apple-touch-icon" sizes="152x152" href="pictures\favicon.gif">
-    <link rel="apple-touch-icon" sizes="180x180" href="pictures\favicon.gif">
-    <link rel="apple-touch-icon" sizes="167x167" href="pictures\favicon.gif">
+    <link id="favicon" rel="icon" type="image/gif" href="favicon.gif">
+    <link rel="icon" href="favicon.gif" type="image/gif">
+    <link rel="shortcut icon" type="image/gif" href="favicon.gif">
+    <link rel="apple-touch-icon" href="favicon.gif">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon.gif">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.gif">
+    <link rel="apple-touch-icon" sizes="167x167" href="favicon.gif">
 
 
     <meta property="og:title" content="WebStack">
     <meta property="og:description" content="Create your Stack!">
-    <meta property="og:image" content="pictures\favicon.gif">
+    <meta property="og:image" content="favicon.gif">
     <meta property="og:image:type" content="image/gif">
     <meta property="og:url" content="https://tweber.ch/">
     <meta property="og:site_name" content="Webstack">
@@ -73,7 +73,7 @@
                             $stmt->execute();
                             $count = $stmt->rowCount();
                             if($count == 1){
-                                //Username ist frei
+                                //Username existiert
                                 $row = $stmt->fetch();
                                 if(password_verify($_POST["pw"], $row["PASSWORD"])){
                                     session_start();
@@ -108,19 +108,40 @@
                                     //Username ist frei
                                     if($_POST["pw1"] == $_POST["pw2"]){ //überprüfung ob beide Passwörter übereinstimmen.
                                         //user Erstellen
-                                        $stmt = $mysql->prepare("INSERT INTO accounts (USERNAME, PASSWORD, colors) VALUES (:user, :pw1, '5395a7,9bfff4,82e8bf')");
+                                        $stmt = $mysql->prepare("INSERT INTO accounts (USERNAME, PASSWORD, colors, ButtonText, ButtonHyperlink) VALUES (:user, :pw1, '5395a7,9bfff4,82e8bf', '1,Dein erster Link', ',Soo viel Möglichkeiten')");
                                         $stmt->bindParam(":user", $_POST["username"]);
                                         $hash = password_hash($_POST["pw1"], PASSWORD_BCRYPT);
                                         $stmt->bindParam(":pw1", $hash);
                                         $stmt->execute();
-                                        echo "Der Benutzer wurde angelegt.";
+                                        
+                                        //angehendes automatisches Login
+                                            require("mysql.php");
+                                            $stmt = $mysql->prepare("SELECT * FROM accounts WHERE USERNAME = :user"); //Username überprüfen
+                                            $stmt->bindParam(":user", $_POST["username"]);
+                                            $stmt->execute();
+                                            $count = $stmt->rowCount();
+                                            if($count == 1){
+                                                //Username ist frei
+                                                $row = $stmt->fetch();
+                                                if(password_verify($_POST["pw1"], $row["PASSWORD"])){
+                                                    session_start();
+                                                    $_SESSION['username'] = $row["USERNAME"];
+                                                    header("Location: editor.php");
+                                                    } else {
+                                                        echo "Das Passwort ist falsch.";
+                                                    }
+                                            } else {
+                                                echo "Benutzername Existiert nicht";
+                                            }
+
+                                        }
                                     } else {
                                         echo "Die Passwörter stimmen nicht überein";
                                     }
                                 } else {
                                     echo "Der Username ist bereits vergeben";
                                 }
-                        }
+                        
                         ?>
                     <h3>Registrieren</h3>
                     <form action="index.php" method="post" class="FormStyle">

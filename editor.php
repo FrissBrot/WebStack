@@ -17,6 +17,8 @@ if(count($_GET) > 0){ //wird nur ausgeführt, wenn array grösser 0
 else{
     
     $colors = 0;
+    $ButtonText = 0;
+    $HyprText = 0;
 
 }; 
 
