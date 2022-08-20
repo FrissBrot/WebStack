@@ -51,6 +51,11 @@
 
 <body>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <div class="WarnungTop">
+        <div id="Warnung">
+            <span id="WarnungText">Warung</span>
+        </div>
+    </div>
     <div class="WebstackStart" id="WebstackStart">
         <div class="WebstackStartSchrift">
             <h1 class="WebstackH1"><span class="WebstackSpan">Webstack</span>.</h1>
@@ -309,6 +314,23 @@ function callbackFunc() {
 window.addEventListener("load", callbackFunc);
 console.log("addEventlistener");
 window.addEventListener("scroll", callbackFunc);
+
+//funktion lässt kleine Warung erscheinen.
+function warnung(Inhalt) {
+    document.getElementById('Warnung').style.animation = "warnung 0.2s ease-out";
+    document.getElementById("Warnung").style.opacity = "1";
+    document.getElementById('WarnungText').innerHTML = Inhalt;
+    setTimeout(warnungHide, 5000)
+}
+
+function warnungHide() {
+    document.getElementById('Warnung').style.animation = "warnungOpacity 0.2s linear";
+    setTimeout(warnungHide2, 200)
+}
+
+function warnungHide2() {
+    document.getElementById("Warnung").style.opacity = "0";
+}
 </script>
 
 </html>

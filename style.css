@@ -72,6 +72,31 @@ html {
   margin-right: calc((100vw - var(--width)) / 2);
 }
 
+.WarnungTop {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#Warnung {
+  width: 13%;
+  height: 6%;
+  border-radius: 20px;
+  background-color: #A93226;
+  color: white;
+  position: fixed;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 0;
+  overflow: hidden;
+}
+
+#WarnungText {
+  margin-left: 15px;
+}
+
 @keyframes typing {
   from {
     width: 0
@@ -598,4 +623,26 @@ footer ul li:last-child {
   to {
     opacity: 1;
   }
+}
+
+@keyframes warnung {
+  from {
+    width: 0px;
+  }
+
+  to {
+    width: 13%;
+  }
+
+}
+
+@keyframes warnungOpacity {
+  from {
+    opacity: 0.95;
+  }
+
+  to {
+    opacity: 0;
+  }
+
 }
