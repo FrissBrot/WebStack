@@ -36,6 +36,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <script src="https://unpkg.com/akar-icons-fonts"></script>
@@ -71,6 +72,7 @@
             <div class="LoginTabs">
                 <div id="Login" class="tabcontent">
                     <?php
+                        $_Error = "";
                         if(isset($_POST["submit"])){
                             require("mysql.php");
                             $stmt = $mysql->prepare("SELECT * FROM accounts WHERE USERNAME = :user"); //Username überprüfen
@@ -85,10 +87,10 @@
                                     $_SESSION['username'] = $row["USERNAME"];
                                     header("Location: editor.php");
                                     } else {
-                                        echo "Das Passwort ist falsch.";
+                                        setcookie("ErrorCookie","Das Passwort ist falsch.", time()+20);
                                     }
                             } else {
-                                echo "Benutzername Existiert nicht";
+                                setcookie("ErrorCookie","Benutzername existiert nicht.", time()+20);
                             }
                         }
                     ?>
@@ -104,7 +106,7 @@
 
                 <div id="Registrieren" class="tabcontent">
                     <?php 
-                        if (isset($_POST["submit"])) {
+                        if (isset($_POST["submitReg"])) {
                                 require("mysql.php");
                                 $stmt = $mysql->prepare("SELECT * FROM accounts WHERE USERNAME = :user"); //Username überprüfen
                                 $stmt->bindParam(":user", $_POST["username"]);
@@ -133,18 +135,18 @@
                                                     $_SESSION['username'] = $row["USERNAME"];
                                                     header("Location: editor.php");
                                                     } else {
-                                                        echo "Das Passwort ist falsch.";
                                                     }
                                             } else {
-                                                echo "Benutzername Existiert nicht";
                                             }
 
+                                        } else{
+                                            setcookie("ErrorCookie","Die Passwörter stimmen nicht überein.", time()+20);
                                         }
                                     } else {
-                                        echo "Die Passwörter stimmen nicht überein";
+                                        setcookie("ErrorCookie","Der Benutzername ist bereits vergeben.", time()+20);
                                     }
                                 } else {
-                                    echo "Der Username ist bereits vergeben";
+                                    
                                 }
                         
                         ?>
@@ -155,8 +157,8 @@
                         <input type="password" name="pw1" placeholder="Passwort" required><br>
                         <input type="password" name="pw2" placeholder="Passwort bestätigen" required><br>
                         <div class="FormularButton">
-                            <button type="submit" name="submit" class="ButtonHoverEffect" role="button"><span
-                                    class="text">Erstellen</span><span>Lets Goo!</span></button>
+                            <button id="ButtonBasicHover2" type="submit" name="submitReg" class="ButtonHoverEffect"
+                                role="button"><span class="text">Erstellen</span><span>Lets Goo!</span></button>
                         </div>
                 </div>
             </div>
@@ -213,7 +215,7 @@
             <li>
                 <p>Links</p>
             </li>
-            <li><a href="https://github.com/FrissBrot/webstack" target="_blank">Quell Code</a></li>
+            <li><a href="https://github.com/FrissBrot/webstack" target="_blank">Quellcode</a></li>
             <li><a href="https://github.com/FrissBrot" target="_blank">GitHub</a></li>
             <li><a href="https://tweber.ch/datenschutz" target="_blank">Datenschutzbestimmung</a></li>
         </ul>
@@ -299,7 +301,7 @@ function callbackFunc() {
     console.log(i);
     for (var i = 0; i < elements.length; i++) {
         if (isElementInViewport(elements[i])) {
-            elements[i].classList.add("visible");
+            elements[i].style.animation = "fadeEffect 2s both";
 
         }
 
@@ -315,13 +317,46 @@ window.addEventListener("load", callbackFunc);
 console.log("addEventlistener");
 window.addEventListener("scroll", callbackFunc);
 
-//funktion lässt kleine Warung erscheinen.
+if (getCookieValue("ErrorCookie").length > 0) {
+
+    var ErrorStr = decodeURI(getCookieValue("ErrorCookie"));
+    warnung(ErrorStr);
+    switch (ErrorStr) {
+
+        case "Die Passwörter stimmen nicht überein.":
+        case "Der Benutzername ist bereits vergeben.":
+            scrollToLogin(2);
+            break;
+
+        case "Das Passwort ist falsch.":
+        case "Benutzername existiert nicht.":
+            scrollToLogin(1);
+            break;
+
+    };
+
+
+};
+
+
+//Cookie auslesen
+function getCookieValue(a) {
+    const b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+    return b ? b.pop() : '';
+
+    console.log("getCookieValue " + getCookieValue("cookiereader"));
+}
+
+
+//funktion lässt Warung erscheinen.
 function warnung(Inhalt) {
     document.getElementById('Warnung').style.animation = "warnung 0.2s ease-out";
     document.getElementById("Warnung").style.opacity = "1";
-    document.getElementById('WarnungText').innerHTML = Inhalt;
+    document.getElementById('WarnungText').innerHTML = (Inhalt);
+    document.cookie = "ErrorCookie=deleted; max-age=1; path=/;"
     setTimeout(warnungHide, 5000)
 }
+
 
 function warnungHide() {
     document.getElementById('Warnung').style.animation = "warnungOpacity 0.2s linear";

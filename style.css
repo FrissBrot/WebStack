@@ -78,9 +78,9 @@ html {
 }
 
 #Warnung {
-  width: 13%;
-  height: 6%;
-  border-radius: 20px;
+  width: 17%;
+  height: 4%;
+  border-radius: 15px;
   background-color: #A93226;
   color: white;
   position: fixed;
@@ -120,6 +120,7 @@ html {
   width: 100%;
   background-color: var(--backgroundYellow);
   font-family: 'Rubik', sans-serif;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -240,6 +241,8 @@ html {
   border-bottom-color: var(--fontYellow);
   margin-top: 20px;
   outline-style: none;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 .FormStyle input.active {
@@ -493,6 +496,7 @@ html {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
 }
+
 
 .MarketingExampleInnerStyle img {
   margin-top: 6%;
