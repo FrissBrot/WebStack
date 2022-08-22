@@ -140,14 +140,16 @@ $SavedHypr1 = explode(",", $SavedHypr[0])
             <button class="EditButtons"
                 onclick="VarSubmit(removeFirstChar(backgroundInput.value), removeFirstChar(buttonInput.value), removeFirstChar(hoverInput.value))">Speichern</button>
         </div>
-        <div id="previewbody">
-            <img class="profileborder profilbildsize" src="pb.webp" alt="Profilbild">
-            <h1 id=usernameshow>Dein Benutzername</h1>
-            <!-- <button type="button"
+        <div id="previewefield">
+            <div id="previewbody">
+                <img class="profileborder profilbildsize" src="pb.webp" alt="Profilbild">
+                <h1 id=usernameshow>Dein Benutzername</h1>
+                <!-- <button type="button"
                 onclick="window.open('https://open.spotify.com/user/69qw99f7ej6x4j26813u9hnly?si=bc5435e89ad54602', '_blank');"
                 class="linkbutton" id="ButId1"><img alt="Spotify Icon" class="iconsize"
                     src="pictures\spotify.png">Spotify</button><br>
 -->
+            </div>
         </div>
     </div>
 

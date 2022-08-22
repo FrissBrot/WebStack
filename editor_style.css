@@ -4,6 +4,8 @@
   --kb-color-hover: green;
 }
 
+
+
 #editfield {
   display: flex;
   float: left;
@@ -13,14 +15,16 @@
 #editbar {
   background-color: #252526;
   width: calc(100vw * 0.15);
-  height: 100vh;
+  height: calc(100vh - 165px);
   color: white;
-  margin-top: 100px;
+  margin-top: 70px;
+  margin-left: 20px;
   border-radius: 10px;
   border-color: #f4c700;
   border-style: solid;
   border-width: 2px;
   font-family: 'Rubik', sans-serif;
+  position: fixed;
 }
 
 #EditBarTitle {
@@ -106,15 +110,20 @@
   border: none;
 }
 
+#previewefield {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+
+}
+
 #previewbody {
   text-align: center;
   color: black;
   background-color: var(--kb-color-background);
   width: calc(100vw * 0.6);
   border-radius: 50px;
-  margin-top: 100px;
-  margin-left: calc((100vw - (100vw * 0.9)) / 2);
-  margin-right: calc((100vw - (100vw * 0.6)) / 2);
+  margin-top: 70px;
 }
 
 .iconsize {
